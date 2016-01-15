@@ -54,6 +54,13 @@ A: NPC's are tied to structures, so unless we have a Jedi Temple during the time
 
 
 
+###Q: Double lightsabers, pls?
+
+A:
+> "We've got to give him more time!" - *Lando Calrissian*
+
+
+
 ###Q: Will this mod work with [some other mod]?
 
 A: We can't guarantee compatibility with everything, but we would like to make PSWM as compatible as possible so give it a try with whatever you want to, and if it doesn't work, post an issue to our GitHub.
