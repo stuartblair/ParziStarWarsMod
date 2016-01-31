@@ -63,7 +63,7 @@ A:
 
 ###Q: Will this mod work with [some other mod]?
 
-A: We can't guarantee compatibility with everything, but we would like to make PSWM as compatible as possible so give it a try with whatever you want to, and if it doesn't work, post an issue to our GitHub.
+A: We can't guarantee compatibility with everything, but we would like to make PSWM as compatible as possible so give it a try with whatever you want to, and if it doesn't work, post an issue here on our GitHub.
 
 
 
