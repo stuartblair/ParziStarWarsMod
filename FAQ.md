@@ -96,6 +96,34 @@ A: We like them not being 3D, but maybe.
 
 
 
+###Q: How do you do/use "insert feature/action/mechanic"?
+
+A: Take a look at our wiki, it'll probably clear some things up.
+
+
+
+
+###Q: Why are ships "buggy"?
+
+A: They're not, they just fly faster than most chunks can load/reload if you have your render distance set too high. Try turning down your render distance and start your flight above some area you've already loaded/played in.  A little frame drop should be expected, but if you have your settings right it shouldn't be that noticeable.
+
+
+
+
+###Q: Where are main character armors like Darth Vader and Kylo Ren?
+
+A: Not yet added.
+
+
+
+
+###Q: Add Jakku and Starkiller Base and more Sequel Content!!
+
+A: We have a lot of content across all of the trilogies planned, please bear with us.
+
+
+
+
 ###Q: Lightsabers should deflect blaster bolts and make crashing noises when they hit another lightsaber that's blocking!!
 
 A: They already do, we promise.
