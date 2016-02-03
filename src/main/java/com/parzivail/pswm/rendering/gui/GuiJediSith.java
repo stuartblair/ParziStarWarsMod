@@ -1,16 +1,5 @@
 package com.parzivail.pswm.rendering.gui;
 
-import org.lwjgl.opengl.GL11;
-
-import com.parzivail.pswm.Resources;
-import com.parzivail.pswm.StarWarsMod;
-import com.parzivail.pswm.jedirobes.ArmorJediRobes;
-import com.parzivail.pswm.network.MessageRobesStringNBT;
-import com.parzivail.pswm.utils.ForceUtils;
-import com.parzivail.util.ui.GlPalette;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
@@ -18,6 +7,18 @@ import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+
+import org.lwjgl.opengl.GL11;
+
+import com.parzivail.pswm.Resources;
+import com.parzivail.pswm.StarWarsMod;
+import com.parzivail.pswm.jedirobes.ArmorJediRobes;
+import com.parzivail.pswm.network.MessageRobesStringNBT;
+import com.parzivail.pswm.utils.ForceUtils;
+import com.parzivail.util.ui.GLPalette;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class GuiJediSith extends GuiScreen
@@ -74,16 +75,16 @@ public class GuiJediSith extends GuiScreen
 		int x = r.getScaledWidth() / 2;
 		int y = r.getScaledHeight() / 2;
 		int dy = y - 80;
-		this.drawCenteredString(this.mc.fontRenderer, "You have a nightmare.", x, dy += 10, GlPalette.WHITE);
-		this.drawCenteredString(this.mc.fontRenderer, "A Dark Man speaks to you.", x, dy += 10, GlPalette.WHITE);
+		this.drawCenteredString(this.mc.fontRenderer, "You have a nightmare.", x, dy += 10, GLPalette.WHITE);
+		this.drawCenteredString(this.mc.fontRenderer, "A Dark Man speaks to you.", x, dy += 10, GLPalette.WHITE);
 		dy += 10;
-		this.drawCenteredString(this.mc.fontRenderer, "He wants to share his secrets.", x, dy += 10, GlPalette.LIGHT_RED);
-		this.drawCenteredString(this.mc.fontRenderer, "His dark knowledge.", x, dy += 10, GlPalette.RED);
+		this.drawCenteredString(this.mc.fontRenderer, "He wants to share his secrets.", x, dy += 10, GLPalette.LIGHT_RED);
+		this.drawCenteredString(this.mc.fontRenderer, "His dark knowledge.", x, dy += 10, GLPalette.RED);
 		dy += 10;
-		this.drawCenteredString(this.mc.fontRenderer, "Do you accept?", x, dy += 10, GlPalette.WHITE);
+		this.drawCenteredString(this.mc.fontRenderer, "Do you accept?", x, dy += 10, GLPalette.WHITE);
 
-		this.drawString(this.mc.fontRenderer, "Never.", x - 73, y + 19, GlPalette.WHITE);
-		this.drawString(this.mc.fontRenderer, "Show me.", x + 38, y + 19, GlPalette.WHITE);
+		this.drawString(this.mc.fontRenderer, "Never.", x - 73, y + 19, GLPalette.WHITE);
+		this.drawString(this.mc.fontRenderer, "Show me.", x + 38, y + 19, GLPalette.WHITE);
 
 		super.drawScreen(p_571_1_, p_571_2_, p_571_3_);
 	}
@@ -104,7 +105,7 @@ public class GuiJediSith extends GuiScreen
 		this.sithButton = new GuiButtonSith(2, x + 20, y + 15);
 		this.buttonList.add(this.sithButton);
 		/*
-		 * if (p_73869_2_ == 1) { this.mc.displayGuiScreen((GuiScreen)null);
+		 * if (keyCode == 1) { this.mc.displayGuiScreen((GuiScreen)null);
 		 * this.mc.setIngameFocus(); }
 		 */
 	}
@@ -114,7 +115,7 @@ public class GuiJediSith extends GuiScreen
 	 * KeyListener.keyTyped(KeyEvent e).
 	 */
 	@Override
-	protected void keyTyped(char p_73869_1_, int p_73869_2_)
+	protected void keyTyped(char typedChar, int keyCode)
 	{
 		// don't exit on escape, force player to choose
 	}

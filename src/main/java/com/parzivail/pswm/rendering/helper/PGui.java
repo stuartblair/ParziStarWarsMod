@@ -25,7 +25,7 @@ import com.parzivail.pswm.Resources.ConfigOptions;
 import com.parzivail.pswm.StarWarsMod;
 import com.parzivail.pswm.handlers.ClientEventHandler;
 import com.parzivail.pswm.minimap.MinimapStore;
-import com.parzivail.util.ui.GlPalette;
+import com.parzivail.util.ui.GLPalette;
 import com.parzivail.util.ui.Lumberjack;
 
 import cpw.mods.fml.relauncher.ReflectionHelper;
@@ -89,8 +89,16 @@ public class PGui// extends Gui
 		}
 		catch (Exception e)
 		{
-			Lumberjack.warn("Unable to change camera distance!");
-			e.printStackTrace();
+			try
+			{
+				ReflectionHelper.setPrivateValue(net.minecraft.client.renderer.EntityRenderer.class, StarWarsMod.mc.entityRenderer, dist, "field_78490_B");
+				ReflectionHelper.setPrivateValue(net.minecraft.client.renderer.EntityRenderer.class, StarWarsMod.mc.entityRenderer, dist, "field_78491_C");
+			}
+			catch (Exception e2)
+			{
+				Lumberjack.warn("Unable to change camera distance!");
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -124,7 +132,7 @@ public class PGui// extends Gui
 		GL11.glEnable(GL11.GL_BLEND);
 		GL11.glDisable(GL11.GL_TEXTURE_2D);
 		GL11.glEnable(GL11.GL_LINE_SMOOTH);
-		GlPalette.glColorI(color);
+		GLPalette.glColorI(color);
 		GL11.glBlendFunc(770, 771);
 		GL11.glLineWidth(2);
 
@@ -640,7 +648,7 @@ public class PGui// extends Gui
 			}
 		GL11.glEnable(GL11.GL_TEXTURE_2D);
 		GL11.glDisable(GL11.GL_BLEND);
-		this.drawHollowTriangle((max - min) * size / 2, (max - min) * size / 2, 4, center.rotationYaw + 180, 2, GlPalette.BLACK);
+		this.drawHollowTriangle((max - min) * size / 2, (max - min) * size / 2, 4, center.rotationYaw + 180, 2, GLPalette.BLACK);
 
 		// to use:
 		// GL11.glPushMatrix();
@@ -743,16 +751,16 @@ public class PGui// extends Gui
 		GL11.glDisable(GL11.GL_BLEND);
 	}
 
-	public void drawScaledCustomSizeModalRect(int p_152125_0_, int p_152125_1_, float p_152125_2_, float p_152125_3_, int p_152125_4_, int p_152125_5_, int p_152125_6_, int p_152125_7_, float p_152125_8_, float p_152125_9_)
+	public void drawScaledCustomSizeModalRect(int x, int y, float u, float v, int uWidth, int vHeight, int width, int height, float tileWidth, float tileHeight)
 	{
-		float f4 = 1.0F / p_152125_8_;
-		float f5 = 1.0F / p_152125_9_;
+		float f4 = 1.0F / tileWidth;
+		float f5 = 1.0F / tileHeight;
 		Tessellator tessellator = Tessellator.instance;
 		tessellator.startDrawingQuads();
-		tessellator.addVertexWithUV(p_152125_0_, p_152125_1_ + p_152125_7_, 0.0D, p_152125_2_ * f4, (p_152125_3_ + p_152125_5_) * f5);
-		tessellator.addVertexWithUV(p_152125_0_ + p_152125_6_, p_152125_1_ + p_152125_7_, 0.0D, (p_152125_2_ + p_152125_4_) * f4, (p_152125_3_ + p_152125_5_) * f5);
-		tessellator.addVertexWithUV(p_152125_0_ + p_152125_6_, p_152125_1_, 0.0D, (p_152125_2_ + p_152125_4_) * f4, p_152125_3_ * f5);
-		tessellator.addVertexWithUV(p_152125_0_, p_152125_1_, 0.0D, p_152125_2_ * f4, p_152125_3_ * f5);
+		tessellator.addVertexWithUV(x, y + height, 0.0D, u * f4, (v + vHeight) * f5);
+		tessellator.addVertexWithUV(x + width, y + height, 0.0D, (u + uWidth) * f4, (v + vHeight) * f5);
+		tessellator.addVertexWithUV(x + width, y, 0.0D, (u + uWidth) * f4, v * f5);
+		tessellator.addVertexWithUV(x, y, 0.0D, u * f4, v * f5);
 		tessellator.draw();
 	}
 

@@ -347,7 +347,11 @@ public class StarWarsMod
 				m.add(mod);
 			}
 		if (flag)
-			throw new UserError("Parzi's Star Wars Mod is incompatible with the following mods: " + String.join(", ", m));
+		{
+			Lumberjack.warn("WARNING! It is known that Parzi's Star Wars Mod may be incompatible with the following mods:");
+			Lumberjack.warn("-> " + String.join(", ", m));
+			Lumberjack.warn("Please report any issues to our GitHub: https://github.com/Parzivail-Modding-Team/ParziStarWarsMod/issues");
+		}
 	}
 
 	private void checkJavaVersion() throws UserError
@@ -357,7 +361,7 @@ public class StarWarsMod
 		pos = versionString.indexOf('.', pos + 1);
 		double version = Double.parseDouble(versionString.substring(0, pos));
 		if (version < 1.8)
-			throw new UserError("Parzi's Star Wars Mod only supports Java 8 and above! It is REQUIRED to function properly! You are currently using Java " + version);
+			throw new UserError("Parzi's Star Wars Mod requires Java 1.8 and above. You are currently using Java " + version);
 	}
 
 	private void checkModVersion()
@@ -452,20 +456,20 @@ public class StarWarsMod
 		network.registerMessage(PacketShipTargetLock.Handler.class, PacketShipTargetLock.class, packetId++, Side.SERVER);
 		network.registerMessage(PacketUpdateRobes.Handler.class, PacketUpdateRobes.class, packetId++, Side.SERVER);
 
-		registerMessage(MessageEntityGrab.class);
-		registerMessage(MessageAddEffectTo.class);
-		registerMessage(MessageHoloTableUpdate.class);
-		registerMessage(MessageSetEntityTarget.class);
-		registerMessage(MessageCreateDestructionBolt.class);
-		registerMessage(MessageEntityAlterMotion.class);
-		registerMessage(MessageHyperdrive.class);
-		registerMessage(MessageEntityHurt.class);
-		registerMessage(MessageTransmute.class);
-		registerMessage(MessageEntityReverse.class);
-		registerMessage(MessageRobesBooleanNBT.class);
-		registerMessage(MessageRobesIntNBT.class);
-		registerMessage(MessageRobesStringNBT.class);
-		registerMessage(MessageSFoil.class);
+		this.registerMessage(MessageEntityGrab.class);
+		this.registerMessage(MessageAddEffectTo.class);
+		this.registerMessage(MessageHoloTableUpdate.class);
+		this.registerMessage(MessageSetEntityTarget.class);
+		this.registerMessage(MessageCreateDestructionBolt.class);
+		this.registerMessage(MessageEntityAlterMotion.class);
+		this.registerMessage(MessageHyperdrive.class);
+		this.registerMessage(MessageEntityHurt.class);
+		this.registerMessage(MessageTransmute.class);
+		this.registerMessage(MessageEntityReverse.class);
+		this.registerMessage(MessageRobesBooleanNBT.class);
+		this.registerMessage(MessageRobesIntNBT.class);
+		this.registerMessage(MessageRobesStringNBT.class);
+		this.registerMessage(MessageSFoil.class);
 
 		Lumberjack.log("Network registered " + String.valueOf(packetId) + " packets!");
 
@@ -474,6 +478,7 @@ public class StarWarsMod
 
 		ConfigOptions.enableTabOriginal = config.get("core", "enableTabOriginal", true).getBoolean();
 		ConfigOptions.enableTabSequel = config.get("core", "enableTabSequel", true).getBoolean();
+		ConfigOptions.enableBetaFeatures = config.get("core", "enableBetaFeatures", false).getBoolean();
 		ConfigOptions.beshOverride = config.get("core", "aurebeshInsteadOfEnglish", false).getBoolean();
 		ConfigOptions.enableGlobalLeaderboard = config.get("core", "participateInGlobalLeaderboard", true).getBoolean();
 

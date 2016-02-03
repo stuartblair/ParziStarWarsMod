@@ -1,22 +1,13 @@
 package com.parzivail.pswm.network;
 
-import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.world.World;
 
-import com.parzivail.pswm.entities.EntitySpeederBlasterRifleBolt;
-import com.parzivail.pswm.entities.EntityTIEBolt;
-import com.parzivail.pswm.entities.EntityXWingBolt;
-import com.parzivail.pswm.utils.BlasterBoltType;
-import com.parzivail.pswm.vehicles.VehicXWing;
-import com.parzivail.util.ui.Lumberjack;
+import com.parzivail.util.network.PMessage;
 
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 
-public class MessageRobesIntNBT extends Message<MessageRobesIntNBT>
+public class MessageRobesIntNBT extends PMessage<MessageRobesIntNBT>
 {
 	public EntityPlayer player;
 	public String key;
@@ -36,7 +27,7 @@ public class MessageRobesIntNBT extends Message<MessageRobesIntNBT>
 	@Override
 	public IMessage handleMessage(MessageContext context)
 	{
-		this.player.inventory.armorInventory[2].stackTagCompound.setInteger(key, value);
+		this.player.inventory.armorInventory[2].stackTagCompound.setInteger(this.key, this.value);
 		return null;
 	}
 

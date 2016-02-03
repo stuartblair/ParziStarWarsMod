@@ -1,5 +1,6 @@
 package com.parzivail.pswm.entities;
 
+import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityThrowable;
@@ -51,12 +52,12 @@ public class EntityBlasterBoltBase extends EntityThrowable
 		}
 	}
 
-	public EntityBlasterBoltBase(World par1World, EntityLivingBase par2EntityLivingBase, float damage)
+	public EntityBlasterBoltBase(World par1World, EntityLivingBase sender, float damage)
 	{
-		super(par1World, par2EntityLivingBase);
-		this.sender = par2EntityLivingBase;
+		super(par1World, sender);
+		this.sender = sender;
 		this.damage = damage;
-		this.setThrowableHeading(par2EntityLivingBase.getLookVec().xCoord, par2EntityLivingBase.getLookVec().yCoord, par2EntityLivingBase.getLookVec().zCoord, 1.0F, 1.0F);
+		this.setThrowableHeading(sender.getLookVec().xCoord, sender.getLookVec().yCoord, sender.getLookVec().zCoord, 1.0F, 1.0F);
 	}
 
 	public EntityBlasterBoltBase(World par1World, float damage)
@@ -66,14 +67,14 @@ public class EntityBlasterBoltBase extends EntityThrowable
 	}
 
 	@Override
-	public boolean attackEntityFrom(DamageSource p_70097_1_, float p_70097_2_)
+	public boolean attackEntityFrom(DamageSource source, float amount)
 	{
 		if (this.isEntityInvulnerable())
 			return false;
 		this.setBeenAttacked();
-		if (p_70097_1_.getEntity() != null)
+		if (source.getEntity() != null)
 		{
-			Vec3 vec3 = p_70097_1_.getEntity().getLookVec();
+			Vec3 vec3 = source.getEntity().getLookVec();
 			if (vec3 != null)
 			{
 				this.motionX = vec3.xCoord;
@@ -96,9 +97,25 @@ public class EntityBlasterBoltBase extends EntityThrowable
 		return this.sender;
 	}
 
-	public void setSender(EntityLivingBase sender)
+	private void hitFX(int blockX, int blockY, int blockZ)
 	{
-		this.sender = sender;
+		Block block = this.worldObj.getBlock(blockX, blockY, blockZ);
+
+		for (int i = 0; i < 40; i++)
+		{
+			double motionX = -this.motionX * 0.08f;
+			double motionY = this.rand.nextDouble() * 0.05f;
+			double motionZ = -this.motionZ * 0.08f;
+			this.worldObj.spawnParticle("smoke", this.posX + (this.rand.nextFloat() - 0.5f) / 3, this.posY + (this.rand.nextFloat() - 0.5f) / 3, this.posZ + (this.rand.nextFloat() - 0.5f) / 3, motionX, motionY, motionZ);
+		}
+
+		for (int i = 0; i < 40; i++)
+		{
+			double motionX = -this.motionX * 0.02f;
+			double motionY = this.rand.nextDouble() * 0.02f;
+			double motionZ = -this.motionZ * 0.02f;
+			this.worldObj.spawnParticle("blockdust_" + Block.getIdFromBlock(block) + "_" + this.worldObj.getBlockMetadata(blockX, blockY, blockZ), this.posX + (this.rand.nextFloat() - 0.5f) / 3, this.posY + (this.rand.nextFloat() - 0.5f) / 3, this.posZ + (this.rand.nextFloat() - 0.5f) / 3, motionX, motionY, motionZ);
+		}
 	}
 
 	@Override
@@ -141,10 +158,14 @@ public class EntityBlasterBoltBase extends EntityThrowable
 			pos.entityHit.setFire(8);
 			this.setDead();
 		}
-		else if (!this.worldObj.isRemote && this.worldObj.getBlock(pos.blockX, pos.blockY + 1, pos.blockZ) == Blocks.air && ConfigOptions.enableBlasterFire)
+
+		if (this.worldObj.isRemote)
 		{
-			this.worldObj.setBlock(pos.blockX, pos.blockY + 1, pos.blockZ, Blocks.fire);
+			if (this.worldObj.getBlock(pos.blockX, pos.blockY + 1, pos.blockZ) == Blocks.air && ConfigOptions.enableBlasterFire)
+				this.worldObj.setBlock(pos.blockX, pos.blockY + 1, pos.blockZ, Blocks.fire);
 			this.setDead();
+			this.hitFX(pos.blockX, pos.blockY, pos.blockZ);
+			this.playSound(Resources.MODID + ":" + "fx.bolt.hit", 1, 1);
 		}
 	}
 
@@ -156,25 +177,24 @@ public class EntityBlasterBoltBase extends EntityThrowable
 			this.setDead();
 	}
 
+	public void setSender(EntityLivingBase sender)
+	{
+		this.sender = sender;
+	}
+
 	@Override
 	public void setThrowableHeading(double p_70186_1_, double p_70186_3_, double p_70186_5_, float p_70186_7_, float p_70186_8_)
 	{
-		float f2 = MathHelper.sqrt_double(p_70186_1_ * p_70186_1_ + p_70186_3_ * p_70186_3_ + p_70186_5_ * p_70186_5_);
+		double f2 = MathHelper.sqrt_double(p_70186_1_ * p_70186_1_ + p_70186_3_ * p_70186_3_ + p_70186_5_ * p_70186_5_);
 		p_70186_1_ /= f2;
 		p_70186_3_ /= f2;
 		p_70186_5_ /= f2;
-		p_70186_1_ += 0.007499999832361937D * p_70186_8_;
-		p_70186_3_ += 0.007499999832361937D * p_70186_8_;
-		p_70186_5_ += 0.007499999832361937D * p_70186_8_;
-		p_70186_1_ *= p_70186_7_;
-		p_70186_3_ *= p_70186_7_;
-		p_70186_5_ *= p_70186_7_;
 		this.motionX = p_70186_1_ * this.speed;
 		this.motionY = p_70186_3_ * this.speed;
 		this.motionZ = p_70186_5_ * this.speed;
-		float f3 = MathHelper.sqrt_double(p_70186_1_ * p_70186_1_ + p_70186_5_ * p_70186_5_);
-		this.prevRotationYaw = this.rotationYaw = (float)(Math.atan2(p_70186_1_, p_70186_5_) * 180.0D / 3.141592653589793D);
-		this.prevRotationPitch = this.rotationPitch = (float)(Math.atan2(p_70186_3_, f3) * 180.0D / 3.141592653589793D);
+		double f3 = MathHelper.sqrt_double(p_70186_1_ * p_70186_1_ + p_70186_5_ * p_70186_5_);
+		this.prevRotationYaw = this.rotationYaw = (float)(Math.atan2(p_70186_1_, p_70186_5_) * 180.0D / Math.PI);
+		this.prevRotationPitch = this.rotationPitch = (float)(Math.atan2(p_70186_3_, f3) * 180.0D / Math.PI);
 	}
 }
 /*

@@ -23,7 +23,6 @@ import com.parzivail.pswm.network.MessageSetEntityTarget;
 import com.parzivail.pswm.registry.KeybindRegistry;
 import com.parzivail.pswm.rendering.gui.GuiVehicle;
 import com.parzivail.pswm.sound.SoundSFoil;
-import com.parzivail.pswm.utils.BannedPlayerUtils;
 import com.parzivail.pswm.utils.BlasterBoltType;
 import com.parzivail.pswm.utils.ForceUtils;
 import com.parzivail.pswm.utils.ForceUtils.EntityCooldownEntry;
@@ -36,7 +35,6 @@ import com.parzivail.pswm.vehicles.VehicXWing;
 import com.parzivail.util.AnimationManager;
 import com.parzivail.util.entity.EntityUtils;
 import com.parzivail.util.ui.GuiManager;
-import com.parzivail.util.ui.Lumberjack;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.InputEvent;
@@ -60,12 +58,6 @@ public class CommonEventHandler
 	@SubscribeEvent
 	public void logOut(PlayerLoggedInEvent event) throws UserError
 	{
-		if (BannedPlayerUtils.isPlayerBanned(event.player.getCommandSenderName()))
-		{
-			Lumberjack.warn("This is NOT an error! Do NOT post this as a crash report. Thanks!");
-			throw new UserError(BannedPlayerUtils.getBanReason(event.player.getCommandSenderName()));
-		}
-
 		this.resetRobes(event);
 	}
 
@@ -108,12 +100,12 @@ public class CommonEventHandler
 			if (StarWarsMod.mc.thePlayer.ridingEntity instanceof VehicXWing)
 			{
 				VehicXWing xwing = (VehicXWing)StarWarsMod.mc.thePlayer.ridingEntity;
-				if (xwing.getSFoil() <= 0)
+				if (xwing.getSFoil() <= 0.45f && !(xwing.isOpening || xwing.isClosing))
 				{
 					xwing.isOpening = true;
 					Minecraft.getMinecraft().getSoundHandler().playSound(new SoundSFoil(StarWarsMod.mc.thePlayer, true));
 				}
-				if (xwing.getSFoil() >= 0.8f)
+				if (xwing.getSFoil() >= 0.55f && !(xwing.isOpening || xwing.isClosing))
 				{
 					xwing.isClosing = true;
 					Minecraft.getMinecraft().getSoundHandler().playSound(new SoundSFoil(StarWarsMod.mc.thePlayer, false));
@@ -322,13 +314,13 @@ public class CommonEventHandler
 					if (ArmorJediRobes.getActive(StarWarsMod.mc.thePlayer).equals("lightning") || ArmorJediRobes.getActive(StarWarsMod.mc.thePlayer).equals("grab"))
 						if (ClientEventHandler.lastPlayerTarget instanceof EntityPlayer)
 							try
-					{
+							{
 								StarWarsMod.network.sendToServer(new MessageSetEntityTarget(StarWarsMod.mc.thePlayer, -1));
 								ClientEventHandler.lastPlayerTarget = null;
-					}
-					catch (Exception e)
-					{
-					}
+							}
+							catch (Exception e)
+							{
+							}
 					ForceUtils.activePower.duration = 0;
 					StarWarsMod.network.sendToServer(new MessageRobesBooleanNBT(StarWarsMod.mc.thePlayer, Resources.nbtIsUsingDuration, false));
 					ForceUtils.activePower.recharge = ForceUtils.activePower.rechargeTime;
@@ -350,24 +342,24 @@ public class CommonEventHandler
 							}
 							if (e instanceof EntityPlayer)
 								try
-							{
+								{
 									ClientEventHandler.lastPlayerTarget = (EntityPlayer)e;
 									StarWarsMod.network.sendToServer(new MessageSetEntityTarget(StarWarsMod.mc.thePlayer, e.getEntityId()));
-							}
-							catch (Exception exc)
-							{
-							}
+								}
+								catch (Exception exc)
+								{
+								}
 						}
 					}
 					else if (ClientEventHandler.lastPlayerTarget instanceof EntityPlayer)
 						try
-					{
+						{
 							StarWarsMod.network.sendToServer(new MessageSetEntityTarget(StarWarsMod.mc.thePlayer, -1));
 							ClientEventHandler.lastPlayerTarget = null;
-					}
-					catch (Exception e)
-					{
-					}
+						}
+						catch (Exception e)
+						{
+						}
 				}
 			}
 		}

@@ -29,11 +29,11 @@ import com.parzivail.util.entity.trade.WeightedLoot;
 
 public class MobSandtrooper extends EntityMob implements IMob, IRangedAttackMob
 {
+	private static final UUID field_110189_bq = UUID.fromString("49455A49-7EC5-45BA-B886-3B90B23A1718");
+	private static final AttributeModifier field_110190_br = new AttributeModifier(field_110189_bq, "Attacking speed boost", 1, 0).setSaved(false);
 	private int angerLevel;
 	private Entity angryAt = null;
 	private EntityAIArrowAttack aiArrow;
-	private static final UUID field_110189_bq = UUID.fromString("49455A49-7EC5-45BA-B886-3B90B23A1718");
-	private static final AttributeModifier field_110190_br = (new AttributeModifier(field_110189_bq, "Attacking speed boost", 1, 0)).setSaved(false);
 
 	public MobSandtrooper(World par1World)
 	{
@@ -74,9 +74,9 @@ public class MobSandtrooper extends EntityMob implements IMob, IRangedAttackMob
 	}
 
 	@Override
-	public boolean attackEntityFrom(DamageSource p_70097_1_, float p_70097_2_)
+	public boolean attackEntityFrom(DamageSource source, float amount)
 	{
-		Entity entity = p_70097_1_.getEntity();
+		Entity entity = source.getEntity();
 		if (entity instanceof EntityPlayer)
 		{
 			List list = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.boundingBox.expand(32.0D, 32.0D, 32.0D));
@@ -91,7 +91,7 @@ public class MobSandtrooper extends EntityMob implements IMob, IRangedAttackMob
 			}
 			this.becomeAngryAt(entity);
 		}
-		return super.attackEntityFrom(p_70097_1_, p_70097_2_);
+		return super.attackEntityFrom(source, amount);
 	}
 
 	@Override
@@ -173,9 +173,7 @@ public class MobSandtrooper extends EntityMob implements IMob, IRangedAttackMob
 			iattributeinstance.removeModifier(field_110190_br);
 
 			if (this.entityToAttack != null)
-			{
 				iattributeinstance.applyModifier(field_110190_br);
-			}
 		}
 
 		this.angryAt = this.entityToAttack;
