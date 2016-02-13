@@ -116,37 +116,8 @@ public class EntityBlasterBoltBase extends EntityThrowable
 			double motionZ = -this.motionZ * 0.02f;
 			this.worldObj.spawnParticle("blockdust_" + Block.getIdFromBlock(block) + "_" + this.worldObj.getBlockMetadata(blockX, blockY, blockZ), this.posX + (this.rand.nextFloat() - 0.5f) / 3, this.posY + (this.rand.nextFloat() - 0.5f) / 3, this.posZ + (this.rand.nextFloat() - 0.5f) / 3, motionX, motionY, motionZ);
 		}
-	}
-
-	@Override
-	public void onCollideWithPlayer(EntityPlayer player)
-	{
-		if (player.inventory.armorItemInSlot(2) != null && player.inventory.armorItemInSlot(2).getItem() == StarWarsMod.jediRobes)
-		{
-			ItemStack stack = player.inventory.armorItemInSlot(2);
-
-			if (ArmorJediRobes.getActive(stack).equalsIgnoreCase("deflect") && ArmorJediRobes.getUsingDuration(stack))
-			{
-				Vec3 vec3 = player.getLookVec();
-				if (vec3 != null)
-				{
-					this.motionX = vec3.xCoord;
-					this.motionY = vec3.yCoord;
-					this.motionZ = vec3.zCoord;
-				}
-			}
-		}
-		else if (player.getHeldItem() != null && (player.getHeldItem().getItem() == StarWarsMod.lightsaber || player.getHeldItem().getItem() == StarWarsMod.sequelLightsaber) && player.isBlocking())
-		{
-			Vec3 vec3 = player.getLookVec();
-			if (vec3 != null)
-			{
-				this.motionX = vec3.xCoord;
-				this.motionY = vec3.yCoord;
-				this.motionZ = vec3.zCoord;
-			}
-			player.playSound(Resources.MODID + ":" + "item.lightsaber.deflect", 1.0F, 1.0F + (float)MathHelper.getRandomDoubleInRange(this.rand, -0.2D, 0.2D));
-		}
+		
+		this.playSound(Resources.MODID + ":" + "fx.bolt.hit", 1, 1);
 	}
 
 	@Override
@@ -160,9 +131,44 @@ public class EntityBlasterBoltBase extends EntityThrowable
 
 		if (pos.typeOfHit == MovingObjectType.ENTITY && pos.entityHit != this.sender && pos.entityHit != this.sender.ridingEntity)
 		{
-			pos.entityHit.attackEntityFrom(StarWarsMod.blasterDamageSource, this.damage);
-			pos.entityHit.setFire(8);
-			this.setDead();
+			if (pos.entityHit instanceof EntityPlayer)
+			{
+				EntityPlayer entityPlayer = (EntityPlayer)pos.entityHit;
+				if (entityPlayer.inventory.armorItemInSlot(2) != null && entityPlayer.inventory.armorItemInSlot(2).getItem() == StarWarsMod.jediRobes)
+				{
+					ItemStack stack = entityPlayer.inventory.armorItemInSlot(2);
+
+					if (ArmorJediRobes.getActive(stack).equalsIgnoreCase("deflect") && ArmorJediRobes.getUsingDuration(stack))
+					{
+						Vec3 vec3 = entityPlayer.getLookVec();
+						if (vec3 != null)
+						{
+							this.setThrowableHeading(vec3.xCoord, vec3.yCoord, vec3.zCoord, 1.0F, 1.0F);
+						}
+					}
+				}
+				else if (entityPlayer.isBlocking() && entityPlayer.inventory.getCurrentItem() != null && (entityPlayer.inventory.getCurrentItem().getItem() == StarWarsMod.lightsaber || entityPlayer.inventory.getCurrentItem().getItem() == StarWarsMod.sequelLightsaber))
+				{
+					Vec3 vec3 = entityPlayer.getLookVec();
+					if (vec3 != null)
+					{
+						this.setThrowableHeading(vec3.xCoord, vec3.yCoord, vec3.zCoord, 1.0F, 1.0F);
+					}
+					entityPlayer.playSound(Resources.MODID + ":" + "item.lightsaber.deflect", 1.0F, 1.0F + (float)MathHelper.getRandomDoubleInRange(this.rand, -0.2D, 0.2D));
+				}
+				else
+				{
+					pos.entityHit.attackEntityFrom(StarWarsMod.blasterDamageSource, this.damage);
+					pos.entityHit.setFire(8);
+					this.setDead();
+				}
+			}
+			else
+			{
+				pos.entityHit.attackEntityFrom(StarWarsMod.blasterDamageSource, this.damage);
+				pos.entityHit.setFire(8);
+				this.setDead();
+			}
 		}
 
 		if (this.worldObj.isRemote)
@@ -171,7 +177,6 @@ public class EntityBlasterBoltBase extends EntityThrowable
 				this.worldObj.setBlock(pos.blockX, pos.blockY + 1, pos.blockZ, Blocks.fire);
 			this.setDead();
 			this.hitFX(pos.blockX, pos.blockY, pos.blockZ);
-			this.playSound(Resources.MODID + ":" + "fx.bolt.hit", 1, 1);
 		}
 	}
 
