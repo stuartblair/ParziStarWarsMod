@@ -26,6 +26,13 @@ A: Prequel Trilogy Content takes precedence over the animated shows/other games,
 
 
 
+###Q: Will you be adding AT-AT's and AT-ST's
+
+A: AT-AT's might be a bit much in-game if we made them canon-correct size so we're gonna have to say a soft no on that for now.  AT-ST's are something we can actually do without them looking out of place so you could probably expect to see those at some point.
+
+
+
+
 ###Q: Speaking of new content when is the next update and what are you adding?
 
 A: Go look at the Next Update Info tab on our site for info and a few small spoilers about new content.  As for when, we're always working so it's just whenever we feel the next release has enough content and is stable enough to be called a release that we actually put out a new version.  Usually though you're looking at a little over 2 months between major versions, and it could be slightly longer depending on the amount and complexity of things we're adding.
