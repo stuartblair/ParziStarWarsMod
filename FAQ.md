@@ -98,7 +98,7 @@ A: Definitely not.
 
 ###Q: Can you make the guns 3D?
 
-A: We like them not being 3D, but maybe.
+A: All of the Original Trilogy guns are, any other guns still 2D are currently being 3Dified.
 
 
 
