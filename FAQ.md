@@ -4,6 +4,12 @@ A: 1.7.10, and you need Minecraft Forge for 1.7.10 too!
 
 
 
+###Q: Can I use this in a modpack or video?
+
+A: Go right ahead, only if you put the appropriate credit ([link](http://parzivail.com/mods/tswm/) and a mention to Parzi's Star Wars Mod). Thanks!
+
+
+
 
 ###Q: Is this mod compatible with [server running tool or wrapper]?
 
